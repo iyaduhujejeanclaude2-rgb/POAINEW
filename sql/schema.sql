@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS signals (
+ id BIGSERIAL PRIMARY KEY, created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+ asset VARCHAR(40) NOT NULL, market_type VARCHAR(12) NOT NULL DEFAULT 'OTC',
+ timeframe VARCHAR(8) NOT NULL DEFAULT 'M1', side VARCHAR(12) NOT NULL,
+ pattern VARCHAR(120) NOT NULL DEFAULT '', confidence DOUBLE PRECISION NOT NULL DEFAULT 0 CHECK(confidence BETWEEN 0 AND 1),
+ entry_zone VARCHAR(120) NOT NULL DEFAULT 'visual estimate', rationale TEXT NOT NULL DEFAULT '',
+ screenshot_path VARCHAR(300) NOT NULL DEFAULT '', reviewed BOOLEAN NOT NULL DEFAULT FALSE, outcome VARCHAR(12) NOT NULL DEFAULT 'PENDING'
+);
+CREATE INDEX IF NOT EXISTS ix_signals_created_at ON signals(created_at DESC);
+CREATE INDEX IF NOT EXISTS ix_signals_asset_market ON signals(asset,market_type);
